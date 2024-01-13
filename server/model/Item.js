@@ -17,6 +17,10 @@ const itemDetailSchema = new mongoose.Schema({
     type: Date,
     required: true,
   },
+  category: {
+    ref: "Category",
+    type: mongoose.Types.ObjectId,
+  },
 });
 
 const ItemDetails = mongoose.model("Item", itemDetailSchema);

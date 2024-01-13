@@ -1,6 +1,7 @@
 const express = require("express");
 const ItemDetails = require("../../model/Item");
 const router = express.Router();
+
 router.get("/get", async (req, res) => {
   try {
     const items = await ItemDetails.findOne();
@@ -16,14 +17,15 @@ router.get("/get", async (req, res) => {
     });
   }
 });
+
 router.post("/add", async (req, res) => {
   try {
-    const { name, price, supplier_info, mfgDate } = req.body;
+    const { name, price, supplier_info } = req.body;
     const item = await ItemDetails.create({
       name: name,
       price: price,
       supplier_info: supplier_info,
-      mfgDate: mfgDate,
+      mfgDate: Date.now(),
     });
     return res.status(200).json({
       data: item,
