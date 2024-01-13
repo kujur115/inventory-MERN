@@ -1,7 +1,11 @@
 const express = require("express");
 const PORT = 8000;
+const cors = require("cors");
 const DB = require("./config/mongoose");
 const app = express();
+
+app.use(cors());
+app.use(express.json());
 
 app.use("/", require("./routes"));
 
