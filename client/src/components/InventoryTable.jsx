@@ -1,11 +1,12 @@
-const Table = () => {
-  const [items, setItems] = useState([]);
-  useEffect(() => {
-    fetch("http://localhost:8000/item")
-      .then((response) => response.json())
-      .then((data) => setItems(data))
-      .catch((error) => console.error("Error fetching items data:", error));
-  }, []);
+const InventoryTable = (props) => {
+  // const [items, setItems] = useState([]);
+  // useEffect(() => {
+  //   fetch("http://localhost:8000/item")
+  //     .then((response) => response.json())
+  //     .then((data) => setItems(data))
+  //     .catch((error) => console.error("Error fetching items data:", error));
+  // }, []);
+  const { items } = props;
   return (
     <div>
       <table>
@@ -45,4 +46,4 @@ const Table = () => {
     </div>
   );
 };
-export default Table;
+export default InventoryTable;

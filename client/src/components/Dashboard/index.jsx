@@ -1,44 +1,52 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import ItemCreateForm from "../ItemCreateForm";
+import InventoryTable from "../InventoryTable";
 
 const Dashboard = () => {
-  const [name, setName] = useState("");
-  const [price, setPrice] = useState("");
-  const [supplier_info, setSupplierInfo] = useState("");
-  // const [mfgDate, setMfgDate] = useState("");
   const [items, setItems] = useState([]);
+  useEffect(() => {
+    fetch("http://localhost:8000/item")
+      .then((response) => response.json())
+      .then((data) => setItems(data))
+      .catch((error) => console.error("Error fetching items data:", error));
+  }, []);
 
-  const handleFormSubmit = async (e) => {
-    e.preventDefault();
-    const itemObject = {
-      name,
-      price,
-      supplier_info,
-      // mfgDate,
-    };
-    const itemResponse = await fetch("http://localhost:8000/item/add", {
-      method: "POST",
-      body: JSON.stringify(itemObject),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+  // const handleFormSubmit = async (e) => {
+  //   e.preventDefault();
+  //   const itemObject = {
+  //     name,
+  //     price,
+  //     supplier_info,
+  //     // mfgDate,
+  //   };
+  //   const itemResponse = await fetch("http://localhost:8000/item/add", {
+  //     method: "POST",
+  //     body: JSON.stringify(itemObject),
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //   });
 
-    if (itemResponse.status === 200) {
-      const itemData = await itemResponse.json();
-      setItems((items) => [itemData.data, ...items]);
-      const clearInputs = () => {
-        setName("");
-        setPrice("");
-        setSupplierInfo("");
-        // setMfgDate("");
-      };
-      clearInputs();
-    }
-  };
+  //   if (itemResponse.status === 200) {
+  //     const itemData = await itemResponse.json();
+  //     setItems((items) => [itemData.data, ...items]);
+  //     const clearInputs = () => {
+  //       setName("");
+  //       setPrice("");
+  //       setSupplierInfo("");
+  //       // setMfgDate("");
+  //     };
+  //     clearInputs();
+  //   }
+  // };
   return (
     <div>
       <h1> Add Inventory Item</h1>
-      <form onSubmit={handleFormSubmit}>
+      <ItemCreateForm setItems={setItems} items={items} />
+      <br />
+
+      <InventoryTable items={items} />
+      {/* <form onSubmit={handleFormSubmit}>
         <div>
           <label htmlFor="name"> Name:-</label>
           <input
@@ -67,18 +75,11 @@ const Dashboard = () => {
             onChange={(event) => setSupplierInfo(event.target.value)}
           />
         </div>
-        {/* <div>
-          <label htmlFor="mfgDate"> Mfg Date:-</label>
-          <input
-            type="date"
-            id="mfgDate"
-            value={mfgDate}
-            onChange={(event) => setMfgDate(event.target.value)}
-          />
-        </div> */}
+        
         <button type="submit">Submit</button>
         <button type="reset">Reset</button>
-      </form>
+      </form> 
+
       <br />
       <h1>Items List:-</h1>
       <ul>
@@ -86,6 +87,7 @@ const Dashboard = () => {
           <li> {item.name}</li>
         ))}
       </ul>
+        */}
     </div>
   );
 };
