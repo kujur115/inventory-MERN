@@ -1,15 +1,11 @@
+import "bootstrap/dist/css/bootstrap.min.css";
+
 const InventoryTable = (props) => {
-  // const [items, setItems] = useState([]);
-  // useEffect(() => {
-  //   fetch("http://localhost:8000/item")
-  //     .then((response) => response.json())
-  //     .then((data) => setItems(data))
-  //     .catch((error) => console.error("Error fetching items data:", error));
-  // }, []);
+  
   const { items } = props;
   return (
     <div>
-      <table>
+      <table className="table table-primary table-striped table-hover">
         <thead>
           <tr>
             <th>Invoice</th>
@@ -26,7 +22,7 @@ const InventoryTable = (props) => {
         <tbody>
           {items.map((item, index) => (
             <tr key={index}>
-              <td>{item.invoice}</td>
+              <th>{item.invoice}</th>
               <td>{item.name}</td>
               <td>{item.price}</td>
               <td>{item.qty}</td>
