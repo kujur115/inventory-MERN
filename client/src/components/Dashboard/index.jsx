@@ -41,7 +41,6 @@ const Dashboard = () => {
   // };
   return (
     <div>
-      <h1> Add Inventory Item</h1>
       <ItemCreateForm setItems={setItems} items={items} />
       <br />
 

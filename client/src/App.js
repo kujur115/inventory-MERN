@@ -1,9 +1,10 @@
 import Dashboard from "./components/Dashboard";
+import Navbar from "./components/Navbar";
 
 const App = () => {
   return (
     <div className="App">
-      <h1> Inventory Management System </h1>
+      <Navbar />
       <Dashboard />
     </div>
   );
