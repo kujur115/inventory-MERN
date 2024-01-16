@@ -55,7 +55,7 @@ const ItemCreateForm = (props) => {
     );
 
     if (itemResponse.status === 200) {
-      const inventoryData = await itemResponse.json().data();
+      const inventoryData = await itemResponse.json();
       setItems([inventoryData, ...items]);
     }
   };

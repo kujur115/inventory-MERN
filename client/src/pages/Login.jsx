@@ -2,6 +2,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { useState } from "react";
 import { redirect } from "react-router-dom";
 import Loader from "../components/animation/Loader";
+import { useAuth } from "../hooks";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -9,26 +10,25 @@ const Login = () => {
   const [loggedIn, setLoggedIn] = useState(false);
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const auth = useAuth();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoggedIn(true);
     if (!username || !password) {
       setLoggedIn(false);
+      setError(true);
+      setErrorMessage("Please enter both username and password");
       return;
     }
-    const loggingObject = { username, password };
-    const response = await fetch("http://localhost:8000/api/user/login", {
-      method: "POST",
-      body: JSON.stringify(loggingObject),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    
+    const response = await auth.login(username, password);
+    
     if (response.status !== 200) {
       setError(true);
       setErrorMessage(response.message);
     }
-    if (token) {
+    if (auth.username) {
       return redirect("/");
     }
   };

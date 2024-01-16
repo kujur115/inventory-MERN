@@ -1,9 +1,12 @@
 import { createContext } from "react";
+import { useAuthProvider } from "../hooks";
 
 const initialState = {
   user: null,
   login: () => {},
   logout: () => {},
+  signup: () => {},
+  adminSignup: () => {},
   loading: true,
 };
 export const AuthContext = createContext(initialState);

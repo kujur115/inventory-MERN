@@ -39,3 +39,16 @@ export const login = (username, password) => {
     body: { username, password },
   });
 };
+
+export const userRegister = async (name, email, password, confirmPassword) => {
+  return customFetch(API_URLS.signup(), {
+    method: "POST",
+    body: { name, email, password, confirm_password: confirmPassword },
+  });
+};
+export const adminRegister = async (name, email, password, confirmPassword) => {
+  return customFetch(API_URLS.adminSignup(), {
+    method: "POST",
+    body: { name, email, password, confirm_password: confirmPassword },
+  });
+};

@@ -1,8 +1,9 @@
 const API_ROOT = "http://localhost:8000/api/";
 
 export const API_URLS = {
-  login: () => `${API_ROOT}/users/login`,
-  
+  login: () => `${API_ROOT}/user/login`,
+  signup: () => `${API_ROOT}/user/signup`,
+  adminSignup: () => `${API_ROOT}/user/admin/signup`,
 };
 export const LOCALSTORAGE_TOKEN = "__InventoryToken__";
 

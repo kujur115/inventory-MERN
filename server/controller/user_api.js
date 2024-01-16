@@ -13,7 +13,7 @@ module.exports.createSession = async (req, res) => {
     return res.json(200, {
       message: "Signed in successfully",
       data: {
-        username: user.username,
+        user: user,
         token: jwt.sign(user.toJSON(), env.secretKey, {
           expiresIn: "1h",
         }),
@@ -25,5 +25,54 @@ module.exports.createSession = async (req, res) => {
       message: "Internal Server Error",
       error: error,
     });
+  }
+};
+
+module.exports.registerUser = async (req, res) => {
+  try {
+    const { username, password, email } = req.body;
+    const existingUser = await User.findOne({ username });
+
+    if (existingUser) {
+      return res.status(400).json({ message: "Username already exists" });
+    }
+
+    const newUser = new User({
+      username,
+      password,
+      email,
+    });
+
+    await newUser.save();
+
+    res.status(201).json({ message: "user created successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+module.exports.registerAdmin = async (req, res) => {
+  try {
+    const { username, password, email } = req.body;
+    const existingUser = await User.findOne({ username });
+
+    if (existingUser) {
+      return res.status(400).json({ message: "Username already exists" });
+    }
+
+    const newUser = new User({
+      username,
+      password,
+      email,
+      role: "admin",
+    });
+
+    await newUser.save();
+
+    res.status(201).json({ message: "user created successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };

@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import jwt from "jwt-decode";
+import { jwtDecode as jwt } from "jwt-decode";
 import { AuthContext } from "../providers/AuthProvider";
 import {
   LOCALSTORAGE_TOKEN,
@@ -7,24 +7,29 @@ import {
   removeItemFromLocalStorage,
   setItemInLocalStorage,
 } from "../utils";
-import { login as userLogin } from "../api";
+import { login as userLogin, userRegister, adminRegister } from "../api";
 
 export const useAuth = () => {
   return useContext(AuthContext);
 };
 
 export const useAuthProvider = () => {
-  const [username, setUsername] = useState(null);
+  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const getUser = async () => {
-      const userToken = getItemFromLocalStorage(LOCALSTORAGE_TOKEN);
-      if (userToken) {
-        const user = jwt(userToken);
-        setUsername(user.username);
+      try {
+        const userToken = getItemFromLocalStorage(LOCALSTORAGE_TOKEN);
+        if (userToken) {
+          const user = jwt(userToken);
+          setUser(user);
+        }
+      } catch (error) {
+        console.error("Error decoding token:", error);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
     getUser();
   }, []);
@@ -32,7 +37,7 @@ export const useAuthProvider = () => {
   const login = async (username, password) => {
     const response = await userLogin(username, password);
     if (response.success) {
-      setUsername(response.data.username);
+      setUser(response.data.user);
       setItemInLocalStorage(
         LOCALSTORAGE_TOKEN,
         response.data.token ? response.data.token : null
@@ -48,14 +53,52 @@ export const useAuthProvider = () => {
     }
   };
   const logout = () => {
-    setUsername(null);
+    setUser(null);
     removeItemFromLocalStorage(LOCALSTORAGE_TOKEN);
+  };
+  const signup = async (username, password, confirmPassword, email) => {
+    const register = await userRegister(
+      username,
+      email,
+      password,
+      confirmPassword
+    );
+    if (register.success) {
+      return {
+        success: true,
+      };
+    } else {
+      return {
+        success: false,
+        message: register.message,
+      };
+    }
+  };
+  const adminSignup = async (username, password, confirmPassword, email) => {
+    const register = await adminRegister(
+      username,
+      email,
+      password,
+      confirmPassword
+    );
+    if (register.success) {
+      return {
+        success: true,
+      };
+    } else {
+      return {
+        success: false,
+        message: register.message,
+      };
+    }
   };
 
   return {
-    username: username,
+    user: user,
     login: login,
     logout: logout,
     loading: loading,
+    signup: signup,
+    adminSignup,
   };
 };
