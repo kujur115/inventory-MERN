@@ -1,6 +1,6 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import { useState } from "react";
-import { redirect } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Loader from "../components/animation/Loader";
 import { useAuth } from "../hooks";
 
@@ -11,6 +11,12 @@ const Login = () => {
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const auth = useAuth();
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (auth.user) {
+      navigate("/");
+    }
+  }, [auth.user, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,32 +27,38 @@ const Login = () => {
       setErrorMessage("Please enter both username and password");
       return;
     }
-    
+
     const response = await auth.login(username, password);
-    
-    if (response.status !== 200) {
+    console.log("login component", response);
+    if (!response.success) {
       setError(true);
       setErrorMessage(response.message);
+      setLoggedIn(false);
+      return;
     }
-    if (auth.username) {
-      return redirect("/");
-    }
+    navigate("/");
+  };
+  const handleReset = () => {
+    setUsername("");
+    setPassword("");
+    setError(false);
+    setErrorMessage("");
   };
 
   return (
     <form className="container-fluid" onSubmit={handleSubmit}>
       {error && (
-        <div class="alert alert-warning" role="alert">
+        <div className="alert alert-warning" role="alert">
           {errorMessage}
         </div>
       )}
-      <div class="input-group">
-        <span class="input-group-text" id="basic-addon1">
+      <div className="input-group m-2">
+        <span className="input-group-text" id="basic-addon1">
           @
         </span>
         <input
           type="text"
-          class="form-control"
+          className="form-control"
           placeholder="Username"
           aria-label="Username"
           aria-describedby="basic-addon1"
@@ -54,13 +66,13 @@ const Login = () => {
           value={username}
         />
       </div>
-      <div class="input-group">
-        <span class="input-group-text" id="basic-addon1">
-          @
+      <div className="input-group m-2">
+        <span className="input-group-text" id="basic-addon1">
+          ***
         </span>
         <input
           type="password"
-          class="form-control"
+          className="form-control"
           placeholder="Password"
           aria-label="Password"
           aria-describedby="basic-addon1"
@@ -79,6 +91,7 @@ const Login = () => {
         <button
           type="reset"
           className="btn btn-secondary me-2"
+          onClick={handleReset}
           disabled={loggedIn}
         >
           Reset

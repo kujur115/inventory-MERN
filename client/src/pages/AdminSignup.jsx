@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useAuth } from "../hooks";
 import Loader from "../components/animation/Loader";
-import { redirect, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const AdminSignup = () => {
   const [username, setUsername] = useState("");
@@ -14,10 +14,11 @@ const AdminSignup = () => {
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const auth = useAuth();
-  const history = useNavigate();
+  const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSigningUp(true);
+    console.log("username: " + username);
 
     if (!username || !email || !password || !confirmPassword) {
       setError(true);
@@ -31,19 +32,20 @@ const AdminSignup = () => {
       setSigningUp(false);
       return;
     }
-    const response = await auth.adminSignup(
-      username,
-      password,
-      confirmPassword,
-      email
-    );
-    if (response.success) {
-      history("/login");
-    }
-    if (auth.user) {
-      return redirect("/");
+    try {
+      await auth.adminSignup(username, password, confirmPassword, email);
+      navigate("/");
+    } catch (error) {
+      setErrorMessage(true);
+      setErrorMessage("Invalid username or password");
+      setSigningUp(false);
     }
   };
+  useEffect(() => {
+    if (auth.user) {
+      navigate("/");
+    }
+  });
 
   return (
     <form className="container-fluid" onSubmit={handleSubmit}>

@@ -6,12 +6,14 @@ module.exports.createSession = async (req, res) => {
   try {
     const user = await User.findOne({ username: req.body.username });
     if (!user || user.password != req.body.password) {
-      return res.json(422, {
+      return res.status(422).json({
         message: "Invalid username or password",
       });
     }
-    return res.json(200, {
+    res.status(200).json({
       message: "Signed in successfully",
+      success: true,
+      
       data: {
         user: user,
         token: jwt.sign(user.toJSON(), env.secretKey, {

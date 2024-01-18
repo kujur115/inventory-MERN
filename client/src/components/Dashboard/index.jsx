@@ -1,5 +1,7 @@
 // import { useEffect } from "react";
 // import ItemCreateForm from "../ItemCreateForm";
+import { useEffect } from "react";
+import { useAuth } from "../../hooks";
 import InventoryTable from "../InventoryTable";
 import { useNavigate } from "react-router-dom";
 // import { useData } from "../../hooks";
@@ -13,6 +15,12 @@ const Dashboard = () => {
   // }, []);
 
   const navigate = useNavigate();
+  const { user } = useAuth();
+  useEffect(() => {
+    if (!user) {
+      navigate("/login");
+    }
+  });
   return (
     <div className="container mb-3">
       <button

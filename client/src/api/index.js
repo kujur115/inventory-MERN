@@ -22,6 +22,7 @@ const customFetch = async (url, { body, ...customConfig }) => {
   try {
     const response = await fetch(url, config);
     const data = await response.json();
+    console.log("custom_fetch", data);
     if (data.success) {
       return { data: data.data, success: true };
     }

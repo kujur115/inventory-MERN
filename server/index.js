@@ -8,7 +8,7 @@ const Auth = require("./config/middleware");
 app.use(cors());
 app.use(express.json());
 
-app.use("/", Auth.authenticateToken, require("./routes"));
+app.use("/", require("./routes"));
 
 DB.then(() => {
   app.listen(PORT, () => {
