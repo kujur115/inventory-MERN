@@ -1,8 +1,8 @@
 import "bootstrap/dist/css/bootstrap.min.css";
+import { useData } from "../hooks";
 
-const InventoryTable = (props) => {
-  
-  const { items } = props;
+const InventoryTable = () => {
+  const { items } = useData();
   return (
     <div>
       <table className="table table-primary table-striped table-hover">

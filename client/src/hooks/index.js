@@ -8,6 +8,7 @@ import {
   setItemInLocalStorage,
 } from "../utils";
 import { login as userLogin, userRegister, adminRegister } from "../api";
+import { DataContext } from "../providers/DataProvider";
 
 export const useAuth = () => {
   return useContext(AuthContext);
@@ -101,4 +102,19 @@ export const useAuthProvider = () => {
     signup: signup,
     adminSignup,
   };
+};
+
+export const useData = () => useContext(DataContext);
+export const useDataProvider = () => {
+  const [items, setItems] = useState([]);
+  useEffect(() => {
+    const getItemsFromServer = () => {
+      fetch("http://localhost:8000/item")
+        .then((response) => response.json())
+        .then((data) => setItems(data))
+        .catch((error) => console.error("Error fetching items data:", error));
+    };
+    getItemsFromServer();
+  }, []);
+  return { items, setItems };
 };

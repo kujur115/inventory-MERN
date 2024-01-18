@@ -48,17 +48,17 @@ const AdminSignup = () => {
   return (
     <form className="container-fluid" onSubmit={handleSubmit}>
       {error && (
-        <div class="alert alert-warning" role="alert">
+        <div className="alert alert-warning" role="alert">
           {errorMessage}
         </div>
       )}
-      <div class="input-group">
-        <span class="input-group-text" id="basic-addon1">
+      <div className="input-group">
+        <span className="input-group-text" id="basic-addon1">
           Username
         </span>
         <input
           type="text"
-          class="form-control"
+          className="form-control"
           placeholder="Username"
           aria-label="Username"
           aria-describedby="basic-addon1"
@@ -66,13 +66,13 @@ const AdminSignup = () => {
           value={username}
         />
       </div>
-      <div class="input-group">
-        <span class="input-group-text" id="basic-addon1">
+      <div className="input-group">
+        <span className="input-group-text" id="basic-addon1">
           Email
         </span>
         <input
           type="email"
-          class="form-control"
+          className="form-control"
           placeholder="Email"
           aria-label="Email"
           aria-describedby="basic-addon1"
@@ -80,13 +80,13 @@ const AdminSignup = () => {
           value={email}
         />
       </div>
-      <div class="input-group">
-        <span class="input-group-text" id="basic-addon1">
+      <div className="input-group">
+        <span className="input-group-text" id="basic-addon1">
           Password
         </span>
         <input
           type="password"
-          class="form-control"
+          className="form-control"
           placeholder="Password"
           aria-label="Password"
           aria-describedby="basic-addon1"
@@ -94,13 +94,13 @@ const AdminSignup = () => {
           value={password}
         />
       </div>
-      <div class="input-group">
-        <span class="input-group-text" id="basic-addon1">
+      <div className="input-group">
+        <span className="input-group-text" id="basic-addon1">
           Confirm Password
         </span>
         <input
           type="password"
-          class="form-control"
+          className="form-control"
           placeholder="Confirm Password"
           aria-label="Confirm Password"
           aria-describedby="basic-addon1"

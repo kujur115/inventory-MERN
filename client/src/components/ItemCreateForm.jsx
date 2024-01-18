@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { useData } from "../hooks";
+import { useNavigate } from "react-router-dom";
 
 const ItemCreateForm = (props) => {
   const [invoice, setInvoice] = useState("");
@@ -9,7 +11,8 @@ const ItemCreateForm = (props) => {
   const [supplier, setSupplier] = useState("");
   const [category, setCategory] = useState("");
   const [maxInvoice, setMaxInvoice] = useState("");
-  const { setItems, items } = props;
+  const { setItems, items } = useData();
+  const navigate = useNavigate();
   useEffect(() => {
     fetch("http://localhost:8000/api/inventory/getMaxInvoices")
       .then((response) => response.json())
@@ -58,11 +61,12 @@ const ItemCreateForm = (props) => {
       const inventoryData = await itemResponse.json();
       setItems([inventoryData, ...items]);
     }
+    navigate("/");
   };
 
   return (
     <div>
-      <h1>Add Inventory Item</h1>
+      <h3>Add Inventory Item</h3>
       <form onSubmit={handleFormSubmit}>
         <div className="mb-3">
           <label htmlFor="invoice" className="form-label">
@@ -136,6 +140,14 @@ const ItemCreateForm = (props) => {
             onChange={(event) => setSupplier(event.target.value)}
             className="form-control"
           />
+        </div>
+        <div>
+          <button className="btn btn-primary" type="submit">
+            Submit
+          </button>
+          <button className="btn btn-secondary" type="reset">
+            Reset
+          </button>
         </div>
       </form>
     </div>
