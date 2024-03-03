@@ -1,7 +1,7 @@
 const express = require("express");
 
 const router = express.Router();
-const inventoryApi = require("../../../controller/inventory_api");
+const inventoryApi = require("../../../controllers/inventory_api");
 
 router.get("/", inventoryApi.index);
 router.post("/add", inventoryApi.create);

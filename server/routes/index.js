@@ -5,6 +5,7 @@ router.get("/", (req, res) => {
   res.send("Home Page");
 });
 router.use("/item", require("./item"));
+router.use("/users", require("./user"));
 router.use("/api", require("./api"));
 // router.use("/api/inventory", require("./api/inventory"));
 

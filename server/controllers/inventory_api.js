@@ -1,4 +1,4 @@
-const Inventory = require("../model/Inventory");
+const Inventory = require("../models/Inventory");
 
 module.exports.index = async (req, res) => {
   try {

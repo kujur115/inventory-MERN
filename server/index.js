@@ -7,6 +7,7 @@ const cors = require("cors");
 const DB = require("./config/mongoose");
 const app = express();
 const Auth = require("./config/middleware");
+const errorHandler = require("./middleWare/errorMiddleware");
 
 // Middlewares
 app.use(cors());
@@ -16,6 +17,9 @@ app.use(bodyParser.json());
 
 // Routes
 app.use("/", require("./routes"));
+
+// error middleware
+app.use(errorHandler);
 
 DB.then(() => {
   app.listen(PORT, () => {
