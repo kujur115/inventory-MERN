@@ -49,5 +49,5 @@ userDBSchema.pre("save", async function (next) {
   next();
 });
 
-const UserBD = mongoose.model("UserDB", userDBSchema);
-module.exports = UserBD;
+const UserDB = mongoose.model("UserDB", userDBSchema);
+module.exports = UserDB;
