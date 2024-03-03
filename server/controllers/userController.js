@@ -101,4 +101,32 @@ const loginUser = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { registerUser, loginUser };
+const logout = asyncHandler(async (req, res) => {
+  res.cookie("token", "", {
+    path: "/",
+    httpOnly: true,
+    expires: new Date(0),
+    sameSite: "none",
+    secure: true,
+  });
+  return res.status(200).json({ message: "successfully logged out" });
+});
+
+// Get User Data
+const getUser = asyncHandler(async (req, res) => {
+  const user = await UserDB.findById(req.user._id);
+  if (user) {
+    const { _id, name, email, photo, phone, bio } = user;
+    res.status(201).json({
+      _id,
+      name,
+      email,
+      photo,
+      phone,
+      bio,
+      message: "User Fetched Successfully",
+    });
+  }
+});
+
+module.exports = { registerUser, loginUser, logout, getUser };
