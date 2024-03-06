@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { useAuth } from "../hooks";
-import Loader from "../components/animation/Loader";
+import { useAuth } from "../../hooks";
+import Loader from "../../components/animation/Loader";
 import { useNavigate } from "react-router-dom";
 
 const AdminSignup = () => {

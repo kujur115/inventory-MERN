@@ -109,7 +109,7 @@ export const useDataProvider = () => {
   const [items, setItems] = useState([]);
   useEffect(() => {
     const getItemsFromServer = () => {
-      fetch("http://localhost:8000/item")
+      fetch("http://localhost:8000/products")
         .then((response) => response.json())
         .then((data) => setItems(data))
         .catch((error) => console.error("Error fetching items data:", error));

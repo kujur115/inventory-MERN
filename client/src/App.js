@@ -1,8 +1,9 @@
 // import { useState } from "react";
+import { ToastContainer } from "react-toastify";
 import Dashboard from "./components/Dashboard";
 import ItemCreateForm from "./components/ItemCreateForm";
 import Navbar from "./components/Navbar";
-import { Login, Signup, AdminSignup } from "./pages";
+import { Login, Signup, AdminSignup } from "./pages/auth";
 
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
@@ -31,7 +32,9 @@ const App = () => {
 
   return (
     <div className="App">
-      <RouterProvider router={browserRouter} />
+      <ToastContainer>
+        <RouterProvider router={browserRouter} />
+      </ToastContainer>
     </div>
   );
 };
