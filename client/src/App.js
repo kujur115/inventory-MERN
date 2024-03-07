@@ -1,11 +1,13 @@
 // import { useState } from "react";
 import { ToastContainer } from "react-toastify";
-import Dashboard from "./components/Dashboard";
-import ItemCreateForm from "./components/ItemCreateForm";
-import Navbar from "./components/Navbar";
-import { Login, Signup, AdminSignup } from "./pages/auth";
+import Dashboard from "./pages/Dashboard";
 
+import Navbar from "./components/Navbar";
+import { Login, Signup } from "./pages/auth";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { AddProduct, EditProduct, ProductDetail } from "./pages/products";
+import Sidebar from "./components/sidebar";
+import { EditProfile, UserProfile } from "./pages/profile";
 
 const App = () => {
   const browserRouter = createBrowserRouter([
@@ -17,13 +19,24 @@ const App = () => {
           index: true,
           element: <Dashboard />,
         },
-        { path: "/create", element: <ItemCreateForm /> },
         { path: "/login", element: <Login /> },
+        { path: "/register", element: <Signup /> },
         {
-          path: "/register",
+          path: "/dashboard",
+          element: <Sidebar />,
           children: [
-            { index: true, element: <Signup /> },
-            { path: "admin", element: <AdminSignup /> },
+            { index: true, element: <Dashboard /> },
+            { path: "add-product", element: <AddProduct /> },
+            { path: "product-details/:id", element: <ProductDetail /> },
+            { path: "edit-product/:id", element: <EditProduct /> },
+          ],
+        },
+        {
+          path: "/user/profile",
+          element: <Sidebar />,
+          children: [
+            { index: true, element: <UserProfile /> },
+            { path: "edit-profile", element: <EditProfile /> },
           ],
         },
       ],
