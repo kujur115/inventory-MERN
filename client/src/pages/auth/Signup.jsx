@@ -1,130 +1,111 @@
 import { useState } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
-import { useAuth } from "../../hooks";
+import styles from "./auth.module.scss";
 import Loader from "../../components/animation/Loader";
-import { redirect, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import Card from "../../components/card/Card";
+import { TiUserAddOutline } from "react-icons/ti";
+import { toast } from "react-toastify";
+import { registerUser, validateEmail } from "../../services/authServices";
+import { SET_LOGIN, SET_NAME } from "../../redux/features/auth/auth";
 
-const Signup = () => {
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [signingUp, setSigningUp] = useState(false);
+const initialState = {
+  name: "",
+  email: "",
+  password: "",
+  confirmPassword: "",
+};
 
-  const [error, setError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
-  const auth = useAuth();
-  const history = useNavigate();
-  const handleSubmit = async (e) => {
+const SignUp = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  // State for the form inputs and loading state
+  const [formData, setFormData] = useState(initialState);
+  const [loading, setLoading] = useState(false);
+  const { name, email, password, confirmPassword } = formData;
+
+  const handleRegister = async (e) => {
     e.preventDefault();
-    setSigningUp(true);
-
-    if (!username || !email || !password || !confirmPassword) {
-      setError(true);
-      setErrorMessage("Fill all required fields");
-      setSigningUp(false);
-      return;
-    }
-    if (password !== confirmPassword) {
-      setError(true);
-      setErrorMessage("Make sure password and confirm password matches");
-      setSigningUp(false);
-      return;
-    }
-    const response = await auth.signup(
-      username,
-      password,
-      confirmPassword,
-      email
-    );
-    if (response.success) {
-      history("/login");
-    }
-    if (auth.user) {
-      return redirect("/");
+    if (!name || !email || !password)
+      return toast.error("All fields are required!");
+    if (password.length < 6)
+      return toast.error("Password must be at least 6 characters");
+    if (!validateEmail(email)) return toast.error("Please enter a valid email");
+    if (password !== confirmPassword)
+      return toast.error("Passwords do not match");
+    const userData = { name, email, password };
+    setLoading(true);
+    try {
+      const data = await registerUser(userData);
+      console.log(data);
+      await dispatch(SET_LOGIN(true));
+      await dispatch(SET_NAME(data.name));
+      navigate("/dashboard");
+    } catch (error) {
+      console.log(error);
+      toast.error(`Error creating account: ${error.message}`);
+    } finally {
+      setLoading(false);
     }
   };
-
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
   return (
-    <form className="container-fluid" onSubmit={handleSubmit}>
-      {error && (
-        <div class="alert alert-warning" role="alert">
-          {errorMessage}
+    <div className={`container ${styles.auth}`}>
+      {loading && <Loader />}
+      <Card>
+        <div className={styles.form}>
+          <div className="--flex-center">
+            <TiUserAddOutline size={35} color="#999" />
+          </div>
+          <h2>Register</h2>
+          <form onSubmit={handleRegister}>
+            <input
+              type="text"
+              name="name"
+              placeholder="Name"
+              value={name}
+              onChange={handleInputChange}
+              required
+            />
+            <input
+              type="email"
+              name="email"
+              placeholder="Email"
+              value={email}
+              onChange={handleInputChange}
+              required
+            />
+            <input
+              type="password"
+              name="password"
+              placeholder="Password"
+              value={password}
+              onChange={handleInputChange}
+              required
+            />
+            <input
+              type="password"
+              name="confirmPassword"
+              placeholder="Confirm Password"
+              value={confirmPassword}
+              onChange={handleInputChange}
+              required
+            />
+            <button type="submit" className="--btn --btn-primary --btn-block">
+              Register
+            </button>
+          </form>
+          <span className={styles.register}>
+            <Link to="/">Home</Link>
+            <p>&nbsp; Already have an account? &nbsp;</p>
+            <Link to="/login">Login</Link>
+          </span>
         </div>
-      )}
-      <div class="input-group">
-        <span class="input-group-text" id="basic-addon1">
-          Username
-        </span>
-        <input
-          type="text"
-          class="form-control"
-          placeholder="Username"
-          aria-label="Username"
-          aria-describedby="basic-addon1"
-          onChange={(event) => setUsername(event.target.value)}
-          value={username}
-        />
-      </div>
-      <div class="input-group">
-        <span class="input-group-text" id="basic-addon1">
-          Email
-        </span>
-        <input
-          type="email"
-          class="form-control"
-          placeholder="Email"
-          aria-label="Email"
-          aria-describedby="basic-addon1"
-          onChange={(event) => setEmail(event.target.value)}
-          value={email}
-        />
-      </div>
-      <div class="input-group">
-        <span class="input-group-text" id="basic-addon1">
-          Password
-        </span>
-        <input
-          type="password"
-          class="form-control"
-          placeholder="Password"
-          aria-label="Password"
-          aria-describedby="basic-addon1"
-          onChange={(event) => setPassword(event.target.value)}
-          value={password}
-        />
-      </div>
-      <div class="input-group">
-        <span class="input-group-text" id="basic-addon1">
-          Confirm Password
-        </span>
-        <input
-          type="password"
-          class="form-control"
-          placeholder="Confirm Password"
-          aria-label="Confirm Password"
-          aria-describedby="basic-addon1"
-          onChange={(event) => setConfirmPassword(event.target.value)}
-          value={confirmPassword}
-        />
-      </div>
-      <div className="container-fluid justify-content-start">
-        <button
-          type="submit"
-          className="btn btn-primary me-2"
-          disabled={signingUp}
-        >
-          {signingUp ? <Loader /> : "Sign Up"}
-        </button>
-        <button
-          type="reset"
-          className="btn btn-secondary me-2"
-          disabled={signingUp}
-        >
-          Reset
-        </button>
-      </div>
-    </form>
+      </Card>
+    </div>
   );
 };
-export default Signup;
+export default SignUp;

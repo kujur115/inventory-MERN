@@ -3,7 +3,7 @@ import { ToastContainer } from "react-toastify";
 import Dashboard from "./pages/Dashboard";
 
 import Navbar from "./components/Navbar";
-import { Login, Signup } from "./pages/auth";
+import { Login, SignUp } from "./pages/auth";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { AddProduct, EditProduct, ProductDetail } from "./pages/products";
 import Sidebar from "./components/sidebar";
@@ -20,7 +20,7 @@ const App = () => {
           element: <Dashboard />,
         },
         { path: "/login", element: <Login /> },
-        { path: "/register", element: <Signup /> },
+        { path: "/register", element: <SignUp /> },
         {
           path: "/dashboard",
           element: <Sidebar />,
