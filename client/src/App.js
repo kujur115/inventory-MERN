@@ -1,13 +1,15 @@
 // import { useState } from "react";
-import { ToastContainer } from "react-toastify";
-import Dashboard from "./pages/Dashboard";
 
+import Dashboard from "./pages/Dashboard";
+import { ToastContainer } from "react-toastify";
 import Navbar from "./components/Navbar";
 import { Login, SignUp } from "./pages/auth";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { AddProduct, EditProduct, ProductDetail } from "./pages/products";
 import Sidebar from "./components/sidebar";
 import { EditProfile, UserProfile } from "./pages/profile";
+import Home from "./pages/home/Home";
+import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
   const browserRouter = createBrowserRouter([
@@ -17,7 +19,7 @@ const App = () => {
       children: [
         {
           index: true,
-          element: <Dashboard />,
+          element: <Home />,
         },
         { path: "/login", element: <Login /> },
         { path: "/register", element: <SignUp /> },
@@ -45,9 +47,8 @@ const App = () => {
 
   return (
     <div className="App">
-      <ToastContainer>
-        <RouterProvider router={browserRouter} />
-      </ToastContainer>
+      <ToastContainer  position={"top-right"} autoClose={5000} hideProgressBar={false} newestOnTop={false}/>
+      <RouterProvider router={browserRouter} />
     </div>
   );
 };

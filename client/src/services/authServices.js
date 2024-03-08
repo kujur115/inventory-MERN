@@ -43,3 +43,19 @@ export const registerUser = async (userData) => {
     toast.error(message);
   }
 };
+
+// Get Login Status
+export const getLoginStatus = async () => {
+  try {
+    const url = `${BackendUrl}/user/loggedin`;
+    const response = await axios.get(url);
+    return response.data;
+  } catch (error) {
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    console.log(error);
+    toast.error(message);
+  }
+};
