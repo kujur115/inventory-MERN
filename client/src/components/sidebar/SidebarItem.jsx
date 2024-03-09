@@ -3,7 +3,8 @@ import { MdKeyboardArrowRight } from "react-icons/md";
 import { NavLink } from "react-router-dom";
 
 const activeLink = ({ isActive }) => (isActive ? "active" : "link");
-const activeSubLink = ({ isActive }) => (isActive ? "active" : "link");
+const activeSubLink = ({ isActive, isOpen }) =>
+  isActive ? "active" : isOpen ? "link" : "closed";
 const SidebarItem = ({ item, isOpen }) => {
   const [expandMenu, setExpandMenu] = useState(false);
   if (item.children)
@@ -40,13 +41,20 @@ const SidebarItem = ({ item, isOpen }) => {
     );
   else
     return (
-      <NavLink to={item.path} className={activeLink}>
+      <NavLink
+        to={item.path}
+        className={({ isActive }) => activeLink({ isActive, isOpen })}
+      >
         <div className="sidebar-item s-parent">
           <div className="sidebar-title">
-            <span>
-              {item.icon && <div className="icon">{item.icon}</div>}
-              {isOpen && <div>{item.title}</div>}
-            </span>
+            {isOpen ? (
+              <span>
+                {item.icon && <div className="icon">{item.icon}</div>}
+                {item.title}
+              </span>
+            ) : (
+              <div className="icon">{item.icon}</div>
+            )}
           </div>
         </div>
       </NavLink>

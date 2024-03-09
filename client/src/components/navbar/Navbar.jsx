@@ -3,6 +3,7 @@ import styles from "./navbar.module.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { SET_LOGIN, selectIsLoggedIn } from "../../redux/features/auth/auth";
 import { logoutUser } from "../../services/authServices";
+import Footer from "../footer/Footer";
 const Navbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -39,7 +40,7 @@ const Navbar = () => {
       </header>
 
       <Outlet />
-      
+      <Footer />
     </>
   );
 };
