@@ -9,7 +9,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { SET_LOGIN } from "./redux/features/auth/auth";
 import { getLoginStatus } from "./services/authServices";
 import Dashboard from "./pages/Dashboard";
-import Navbar from "./components/Navbar";
+import Navbar from "./components/navbar/Navbar";
 import { Login, SignUp } from "./pages/auth";
 import { AddProduct, EditProduct, ProductDetail } from "./pages/products";
 import Sidebar from "./components/sidebar";

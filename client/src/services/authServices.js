@@ -59,3 +59,17 @@ export const getLoginStatus = async () => {
     toast.error(message);
   }
 };
+
+// Logout User
+export const logoutUser = async () => {
+  try {
+    await axios.get("http://localhost:8000/users/logout");
+  } catch (error) {
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    console.log(error);
+    toast.error(message);
+  }
+};
