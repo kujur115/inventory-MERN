@@ -2,6 +2,7 @@ import { toast } from "react-toastify";
 import axios from "axios";
 
 export const BackendUrl = process.env.BACKEND_URL;
+
 // validate email
 export const validateEmail = (email) =>
   email.match(
@@ -10,7 +11,7 @@ export const validateEmail = (email) =>
 // Login User
 export const loginUser = async (userData) => {
   try {
-    const loginUrl = `${BackendUrl}/users/login`;
+    const loginUrl = `http://localhost:8000/users/login`;
     const response = await axios.post(loginUrl, userData);
     if (!response.statusText === "OK")
       toast.success("User logged in successfully");
@@ -28,7 +29,7 @@ export const loginUser = async (userData) => {
 // Register User
 export const registerUser = async (userData) => {
   try {
-    const registrationUrl = `${BackendUrl}/users/register`;
+    const registrationUrl = `http://localhost:8000/users/register`;
     const res = await axios.post(registrationUrl, userData, {
       withCredentials: true,
     });
@@ -47,8 +48,7 @@ export const registerUser = async (userData) => {
 // Get Login Status
 export const getLoginStatus = async () => {
   try {
-    const url = `${BackendUrl}/user/loggedin`;
-    const response = await axios.get(url);
+    const response = await axios.get("http://localhost:8000/users/loggedin");
     return response.data;
   } catch (error) {
     const message =
